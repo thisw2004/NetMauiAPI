@@ -7,6 +7,7 @@ namespace api.Models
 {
     public class User
     {
+        public int ID { get; set; }
         public int Name { get; set; }
         public int Email { get; set; }
         public int Password { get; set; }
