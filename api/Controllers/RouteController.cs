@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using api.Data;
+using api.Mappers;
 
 namespace api.Controllers
 {
@@ -23,7 +24,8 @@ namespace api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var routes = _context.Blog.ToList();
+            var routes = _context.Route.ToList()
+            .Select(s => s.ToRouteDTO()); //?
 
             return Ok(routes);
         }
@@ -38,7 +40,7 @@ namespace api.Controllers
                 return NotFound();
             }
 
-            return Ok(route);
+            return Ok(route.ToRouteDTO());
 
             //return Ok(users);
         }

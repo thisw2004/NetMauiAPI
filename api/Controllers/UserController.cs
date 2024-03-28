@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Mappers;
 using api.Migrations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -24,7 +25,8 @@ namespace api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var users = _context.User.ToList();
+            var users = _context.User.ToList()
+            .Select(s => s.ToUserDTO());
 
             return Ok(users);
         }
@@ -39,7 +41,7 @@ namespace api.Controllers
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(user.ToUserDTO());
 
             //return Ok(users);
         }

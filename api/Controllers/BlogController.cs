@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using api.Data;
+using api.Mappers;
 
 namespace api.Controllers
 {
@@ -23,7 +24,8 @@ namespace api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var blogs = _context.Blog.ToList();
+            var blogs = _context.Blog.ToList()
+            .Select(s => s.ToBlogDTO());
 
             return Ok(blogs);
         }
@@ -38,7 +40,7 @@ namespace api.Controllers
                 return NotFound();
             }
 
-            return Ok(blog);
+            return Ok(blog.ToBlogDTO());
 
             //return Ok(users);
         }

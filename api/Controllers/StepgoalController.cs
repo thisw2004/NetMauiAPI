@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using api.Data;
+using api.Mappers;
 
 namespace api.Controllers
 {
@@ -23,7 +24,8 @@ namespace api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var stepgoals = _context.Stepgoal.ToList();
+            var stepgoals = _context.Stepgoal.ToList()
+            .Select(s => s.ToStepgoalDTO());
 
             return Ok(stepgoals);
         }
@@ -38,7 +40,7 @@ namespace api.Controllers
                 return NotFound();
             }
 
-            return Ok(stepgoal);
+            return Ok(stepgoal.ToStepgoalDTO());
 
             //return Ok(users);
         }
