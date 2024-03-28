@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace api.Models
 {
-    public class Steps
+    public class Step
     {
+        public int ID { get; set; }
         public DateOnly Date { get; set; }
         public int NumberOfSteps { get; set; }
     }

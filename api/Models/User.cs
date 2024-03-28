@@ -8,8 +8,8 @@ namespace api.Models
     public class User
     {
         public int ID { get; set; }
-        public int Name { get; set; }
-        public int Email { get; set; }
-        public int Password { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
     }
 }

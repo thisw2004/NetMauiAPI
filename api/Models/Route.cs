@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace api.Models
 {
-    public class Route
+    public class Routes
     {
         public int ID { get; set; }
         public string? Name { get; set; }
