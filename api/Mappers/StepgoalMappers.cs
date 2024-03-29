@@ -20,5 +20,14 @@ namespace api.Mappers
                 
             };
         }
+
+        public static Stepgoal ToStepgoalFromCreateDTO(this CreateStepgoalRequestDto StepgoalDTO){
+            return new Stepgoal
+            {
+                Goal = StepgoalDTO.Goal,
+                //rest of the properties need to be filled in by code logic
+
+            };
+        }
     }
 }

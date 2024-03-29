@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using api.Data;
 using api.Mappers;
+using api.Dtos.Blog;
 
 namespace api.Controllers
 {
@@ -43,6 +44,15 @@ namespace api.Controllers
             return Ok(blog.ToBlogDTO());
 
             //return Ok(users);
+        }
+        
+        // 6.
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateBlogRequestDto blogDTO){
+            var blogModel = blogDTO.ToBlogFromCreateDTO();
+            _context.Blog.Add(blogModel);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new {id = blogModel.ID},blogModel.ToBlogDTO());
         }
     }
 }

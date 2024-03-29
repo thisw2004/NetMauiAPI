@@ -21,5 +21,15 @@ namespace api.Mappers
                 UpdatedAt = blogModel.UpdatedAt
             };
         }
+
+        public static Blog ToBlogFromCreateDTO(this CreateBlogRequestDto BlogDTO){
+            return new Blog
+            {
+                Title = BlogDTO.Title,
+                Content = BlogDTO.Content,
+                Author = BlogDTO.Author,
+
+            };
+        }
     }
 }

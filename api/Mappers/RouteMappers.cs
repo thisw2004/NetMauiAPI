@@ -22,5 +22,19 @@ namespace api.Mappers
                 
             };
         }
+
+        //here again routes instead of route because otherwhise he will get microsoft's model
+        public static Routes ToRouteFromCreateDTO(this CreateRouteRequestDto RouteDTO){
+            return new Routes
+            {
+               Name = RouteDTO.Name,
+               Description = RouteDTO.Description,
+               Distance = RouteDTO.Distance,
+               StartPoint = RouteDTO.StartPoint,
+               EndPoint = RouteDTO.EndPoint,
+
+
+            };
+        }
     }
 }

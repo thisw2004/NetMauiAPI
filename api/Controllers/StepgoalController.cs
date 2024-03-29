@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using api.Data;
 using api.Mappers;
+using api.Dtos.Stepgoal;
 
 namespace api.Controllers
 {
@@ -43,6 +44,14 @@ namespace api.Controllers
             return Ok(stepgoal.ToStepgoalDTO());
 
             //return Ok(users);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateStepgoalRequestDto stepgoalDTO){
+            var stepgoalModel = stepgoalDTO.ToStepgoalFromCreateDTO();
+            _context.Stepgoal.Add(stepgoalModel);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new {id = stepgoalModel.ID},stepgoalModel.ToStepgoalDTO());
         }
     }
 }

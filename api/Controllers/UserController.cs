@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Dtos.User;
 using api.Mappers;
 using api.Migrations;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,14 @@ namespace api.Controllers
             return Ok(user.ToUserDTO());
 
             //return Ok(users);
+        }
+        
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateUserRequestDto userDTO){
+            var userModel = userDTO.ToUserFromCreateDTO();
+            _context.User.Add(userModel);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new {id = userModel.ID},userModel.ToUserDTO());
         }
     }
 }

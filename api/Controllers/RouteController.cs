@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using api.Data;
 using api.Mappers;
+using api.Dtos.Route;
 
 namespace api.Controllers
 {
@@ -43,6 +44,15 @@ namespace api.Controllers
             return Ok(route.ToRouteDTO());
 
             //return Ok(users);
+        }
+
+        
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateRouteRequestDto routeDTO){
+            var routeModel = routeDTO.ToRouteFromCreateDTO();
+            _context.Route.Add(routeModel);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new {id = routeModel.ID},routeModel.ToRouteDTO());
         }
     }
 }

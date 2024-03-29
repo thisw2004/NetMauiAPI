@@ -19,5 +19,15 @@ namespace api.Mappers
                 
             };
         }
+
+        public static User ToUserFromCreateDTO(this CreateUserRequestDto UserDTO){
+            return new User
+            {
+                Name = UserDTO.Name,
+                Email = UserDTO.Email,
+                Password = UserDTO.Password,
+
+            };
+        }
     }
 }
