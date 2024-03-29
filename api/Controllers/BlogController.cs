@@ -54,5 +54,24 @@ namespace api.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetById), new {id = blogModel.ID},blogModel.ToBlogDTO());
         }
+
+        [HttpPut]
+        [Route("{id}")]
+
+        public IActionResult Update([FromRoute] int id,[FromBody] UpdateBlogRequestDto updateDto){
+            var blogModel = _context.Blog.FirstOrDefault(x => x.ID == id);
+
+            if(blogModel == null){
+                return NotFound();
+            }
+
+            blogModel.Author = updateDto.Author;
+            blogModel.Content = updateDto.Content;
+            blogModel.Title = updateDto.Title;
+
+            _context.SaveChanges();
+
+            return Ok(blogModel.ToBlogDTO());
+        }
     }
 }

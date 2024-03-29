@@ -54,5 +54,24 @@ namespace api.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetById), new {id = userModel.ID},userModel.ToUserDTO());
         }
+
+        [HttpPut]
+        [Route("{id}")]
+
+        public IActionResult Update([FromRoute] int id,[FromBody] UpdateUserRequestDto updateDto){
+            var userModel = _context.User.FirstOrDefault(x => x.ID == id);
+
+            if(userModel == null){
+                return NotFound();
+            }
+
+            userModel.Name = updateDto.Name;
+            userModel.Email = updateDto.Email;
+            userModel.Password = updateDto.Password;
+
+            _context.SaveChanges();
+
+            return Ok(userModel.ToUserDTO());
+        }
     }
 }

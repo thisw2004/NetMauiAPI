@@ -54,5 +54,26 @@ namespace api.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetById), new {id = routeModel.ID},routeModel.ToRouteDTO());
         }
+
+        [HttpPut]
+        [Route("{id}")]
+
+        public IActionResult Update([FromRoute] int id,[FromBody] UpdateRouteRequestDto updateDto){
+            var routeModel = _context.Route.FirstOrDefault(x => x.ID == id);
+
+            if(routeModel == null){
+                return NotFound();
+            }
+
+            routeModel.Name = updateDto.Name;
+            routeModel.Description = updateDto.Description;
+            routeModel.Distance = updateDto.Distance;
+            routeModel.StartPoint = updateDto.StartPoint;
+            routeModel.EndPoint = updateDto.EndPoint;
+
+            _context.SaveChanges();
+
+            return Ok(routeModel.ToRouteDTO());
+        }
     }
 }

@@ -53,5 +53,24 @@ namespace api.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetById), new {id = stepgoalModel.ID},stepgoalModel.ToStepgoalDTO());
         }
+
+
+        [HttpPut]
+        [Route("{id}")]
+
+        public IActionResult Update([FromRoute] int id,[FromBody] UpdateStepgoalRequestDto updateDto){
+            var stepgoalModel = _context.Stepgoal.FirstOrDefault(x => x.ID == id);
+
+            if(stepgoalModel == null){
+                return NotFound();
+            }
+
+            stepgoalModel.Goal = updateDto.Goal;
+           
+
+            _context.SaveChanges();
+
+            return Ok(stepgoalModel.ToStepgoalDTO());
+        }
     }
 }
