@@ -75,5 +75,23 @@ namespace api.Controllers
 
             return Ok(routeModel.ToRouteDTO());
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult Delete([FromRoute] int id){
+
+            
+            var routeModel = _context.Route.FirstOrDefault(x => x.ID == id);
+
+            if(routeModel == null){
+                return NotFound();
+            }
+
+            _context.Route.Remove(routeModel);
+
+            _context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }

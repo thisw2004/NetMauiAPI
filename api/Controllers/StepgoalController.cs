@@ -72,5 +72,21 @@ namespace api.Controllers
 
             return Ok(stepgoalModel.ToStepgoalDTO());
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult Delete([FromRoute] int id){
+            var stepgoalModel = _context.Stepgoal.FirstOrDefault(x => x.ID == id);
+
+            if(stepgoalModel == null){
+                return NotFound();
+            }
+
+            _context.Stepgoal.Remove(stepgoalModel);
+
+            _context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }

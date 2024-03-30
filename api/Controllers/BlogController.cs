@@ -73,5 +73,21 @@ namespace api.Controllers
 
             return Ok(blogModel.ToBlogDTO());
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult Delete([FromRoute] int id){
+            var blogModel = _context.Blog.FirstOrDefault(x => x.ID == id);
+
+            if(blogModel == null){
+                return NotFound();
+            }
+
+            _context.Blog.Remove(blogModel);
+
+            _context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }
