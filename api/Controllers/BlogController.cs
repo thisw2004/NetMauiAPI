@@ -7,6 +7,7 @@ using Microsoft.Identity.Client;
 using api.Data;
 using api.Mappers;
 using api.Dtos.Blog;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
@@ -23,19 +24,20 @@ namespace api.Controllers
 
         //get all users
         [HttpGet]
-        public IActionResult GetAll()
+        //async = execute this function tegelijk with the other instead stuk voor stuk.
+        public async Task<IActionResult> GetAll()
         {
-            var blogs = _context.Blog.ToList()
-            .Select(s => s.ToBlogDTO());
+            var blogs = await _context.Blog.ToListAsync();
+            var blogDto = blogs.Select(s => s.ToBlogDTO());
 
             return Ok(blogs);
         }
 
         //get 1 user
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var blog = _context.Blog.Find(id);
+            var blog = await _context.Blog.FindAsync(id);
 
             if(blog == null){
                 return NotFound();
@@ -48,18 +50,18 @@ namespace api.Controllers
         
         // 6.
         [HttpPost]
-        public IActionResult Create([FromBody] CreateBlogRequestDto blogDTO){
+        public  async Task<IActionResult> Create([FromBody] CreateBlogRequestDto blogDTO){
             var blogModel = blogDTO.ToBlogFromCreateDTO();
-            _context.Blog.Add(blogModel);
-            _context.SaveChanges();
+           await _context.Blog.AddAsync(blogModel);
+           await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new {id = blogModel.ID},blogModel.ToBlogDTO());
         }
 
         [HttpPut]
         [Route("{id}")]
 
-        public IActionResult Update([FromRoute] int id,[FromBody] UpdateBlogRequestDto updateDto){
-            var blogModel = _context.Blog.FirstOrDefault(x => x.ID == id);
+        public async Task<IActionResult> Update([FromRoute] int id,[FromBody] UpdateBlogRequestDto updateDto){
+            var blogModel = await _context.Blog.FirstOrDefaultAsync(x => x.ID == id);
 
             if(blogModel == null){
                 return NotFound();
@@ -69,23 +71,24 @@ namespace api.Controllers
             blogModel.Content = updateDto.Content;
             blogModel.Title = updateDto.Title;
 
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
 
             return Ok(blogModel.ToBlogDTO());
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete([FromRoute] int id){
-            var blogModel = _context.Blog.FirstOrDefault(x => x.ID == id);
+        public async Task<IActionResult> Delete([FromRoute] int id){
+            var blogModel = await _context.Blog.FirstOrDefaultAsync(x => x.ID == id);
 
             if(blogModel == null){
                 return NotFound();
             }
 
+            //remove not async function,reason unknown
             _context.Blog.Remove(blogModel);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }

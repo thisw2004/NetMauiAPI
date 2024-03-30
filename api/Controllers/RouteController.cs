@@ -7,6 +7,7 @@ using Microsoft.Identity.Client;
 using api.Data;
 using api.Mappers;
 using api.Dtos.Route;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
@@ -23,19 +24,19 @@ namespace api.Controllers
 
         //get all users
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var routes = _context.Route.ToList()
-            .Select(s => s.ToRouteDTO()); //?
+            var  routes = await _context.Route.ToListAsync();
+            var routesdto = routes.Select(s => s.ToRouteDTO()); //?
 
             return Ok(routes);
         }
 
         //get 1 user
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var route = _context.Route.Find(id);
+            var route = await _context.Route.FindAsync(id);
 
             if(route == null){
                 return NotFound();
@@ -48,18 +49,18 @@ namespace api.Controllers
 
         
         [HttpPost]
-        public IActionResult Create([FromBody] CreateRouteRequestDto routeDTO){
+        public async Task<IActionResult> Create([FromBody] CreateRouteRequestDto routeDTO){
             var routeModel = routeDTO.ToRouteFromCreateDTO();
-            _context.Route.Add(routeModel);
-            _context.SaveChanges();
+            await _context.Route.AddAsync(routeModel);
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new {id = routeModel.ID},routeModel.ToRouteDTO());
         }
 
         [HttpPut]
         [Route("{id}")]
 
-        public IActionResult Update([FromRoute] int id,[FromBody] UpdateRouteRequestDto updateDto){
-            var routeModel = _context.Route.FirstOrDefault(x => x.ID == id);
+        public async Task<IActionResult> Update([FromRoute] int id,[FromBody] UpdateRouteRequestDto updateDto){
+            var routeModel = await _context.Route.FirstOrDefaultAsync(x => x.ID == id);
 
             if(routeModel == null){
                 return NotFound();
@@ -71,17 +72,17 @@ namespace api.Controllers
             routeModel.StartPoint = updateDto.StartPoint;
             routeModel.EndPoint = updateDto.EndPoint;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok(routeModel.ToRouteDTO());
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete([FromRoute] int id){
+        public async Task<IActionResult>Delete([FromRoute] int id){
 
             
-            var routeModel = _context.Route.FirstOrDefault(x => x.ID == id);
+            var routeModel = await _context.Route.FirstOrDefaultAsync(x => x.ID == id);
 
             if(routeModel == null){
                 return NotFound();
@@ -89,7 +90,7 @@ namespace api.Controllers
 
             _context.Route.Remove(routeModel);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }

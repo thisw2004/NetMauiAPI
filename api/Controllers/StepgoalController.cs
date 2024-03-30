@@ -7,6 +7,7 @@ using Microsoft.Identity.Client;
 using api.Data;
 using api.Mappers;
 using api.Dtos.Stepgoal;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
@@ -23,19 +24,19 @@ namespace api.Controllers
 
         //get all users
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var stepgoals = _context.Stepgoal.ToList()
-            .Select(s => s.ToStepgoalDTO());
+            var stepgoals = await _context.Stepgoal.ToListAsync();
+            var stepgoaldto = stepgoals.Select(s => s.ToStepgoalDTO());
 
             return Ok(stepgoals);
         }
 
         //get 1 user
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var stepgoal = _context.Stepgoal.Find(id);
+            var stepgoal = await _context.Stepgoal.FindAsync(id);
 
             if(stepgoal == null){
                 return NotFound();
@@ -47,10 +48,10 @@ namespace api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateStepgoalRequestDto stepgoalDTO){
+        public async Task<IActionResult> Create([FromBody] CreateStepgoalRequestDto stepgoalDTO){
             var stepgoalModel = stepgoalDTO.ToStepgoalFromCreateDTO();
-            _context.Stepgoal.Add(stepgoalModel);
-            _context.SaveChanges();
+            await _context.Stepgoal.AddAsync(stepgoalModel);
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new {id = stepgoalModel.ID},stepgoalModel.ToStepgoalDTO());
         }
 
@@ -58,8 +59,8 @@ namespace api.Controllers
         [HttpPut]
         [Route("{id}")]
 
-        public IActionResult Update([FromRoute] int id,[FromBody] UpdateStepgoalRequestDto updateDto){
-            var stepgoalModel = _context.Stepgoal.FirstOrDefault(x => x.ID == id);
+        public async Task<IActionResult> Update([FromRoute] int id,[FromBody] UpdateStepgoalRequestDto updateDto){
+            var stepgoalModel = await _context.Stepgoal.FirstOrDefaultAsync(x => x.ID == id);
 
             if(stepgoalModel == null){
                 return NotFound();
@@ -68,15 +69,15 @@ namespace api.Controllers
             stepgoalModel.Goal = updateDto.Goal;
            
 
-            _context.SaveChanges();
+           await  _context.SaveChangesAsync();
 
             return Ok(stepgoalModel.ToStepgoalDTO());
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete([FromRoute] int id){
-            var stepgoalModel = _context.Stepgoal.FirstOrDefault(x => x.ID == id);
+        public async Task<IActionResult> Delete([FromRoute] int id){
+            var stepgoalModel = await _context.Stepgoal.FirstOrDefaultAsync(x => x.ID == id);
 
             if(stepgoalModel == null){
                 return NotFound();
@@ -84,7 +85,7 @@ namespace api.Controllers
 
             _context.Stepgoal.Remove(stepgoalModel);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
