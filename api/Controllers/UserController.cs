@@ -39,7 +39,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var user =await _context.User.FindAsync(id);
+            var user =await _userRepo.GetByIdAsync(id);
 
             if(user == null){
                 return NotFound();
@@ -53,8 +53,7 @@ namespace api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserRequestDto userDTO){
             var userModel = userDTO.ToUserFromCreateDTO();
-            await _context.User.AddAsync(userModel);
-            await _context.SaveChangesAsync();
+           await _userRepo.CreateAsync(userModel);
             return CreatedAtAction(nameof(GetById), new {id = userModel.ID},userModel.ToUserDTO());
         }
 
@@ -62,17 +61,11 @@ namespace api.Controllers
         [Route("{id}")]
 
         public async Task<IActionResult> Update([FromRoute] int id,[FromBody] UpdateUserRequestDto updateDto){
-            var userModel = await _context.User.FirstOrDefaultAsync(x => x.ID == id);
+            var userModel = await _userRepo.UpdateAsync(id,updateDto);
 
             if(userModel == null){
                 return NotFound();
             }
-
-            userModel.Name = updateDto.Name;
-            userModel.Email = updateDto.Email;
-            userModel.Password = updateDto.Password;
-
-             await _context.SaveChangesAsync();
 
             return Ok(userModel.ToUserDTO());
         }
@@ -80,15 +73,11 @@ namespace api.Controllers
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id){
-            var userModel = await _context.User.FirstOrDefaultAsync(x => x.ID == id);
+            var userModel = await _userRepo.DeleteAsync(id);
 
             if(userModel == null){
                 return NotFound();
             }
-
-            _context.User.Remove(userModel);
-
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

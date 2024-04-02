@@ -40,7 +40,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var route = await _context.Route.FindAsync(id);
+            var route = await _routeRepo.GetByIdAsync(id);
 
             if(route == null){
                 return NotFound();
@@ -55,8 +55,7 @@ namespace api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateRouteRequestDto routeDTO){
             var routeModel = routeDTO.ToRouteFromCreateDTO();
-            await _context.Route.AddAsync(routeModel);
-            await _context.SaveChangesAsync();
+            await _routeRepo.CreateAsync(routeModel);
             return CreatedAtAction(nameof(GetById), new {id = routeModel.ID},routeModel.ToRouteDTO());
         }
 
@@ -64,19 +63,13 @@ namespace api.Controllers
         [Route("{id}")]
 
         public async Task<IActionResult> Update([FromRoute] int id,[FromBody] UpdateRouteRequestDto updateDto){
-            var routeModel = await _context.Route.FirstOrDefaultAsync(x => x.ID == id);
+            var routeModel = await _routeRepo.UpdateAsync(id,updateDto);
 
             if(routeModel == null){
                 return NotFound();
             }
 
-            routeModel.Name = updateDto.Name;
-            routeModel.Description = updateDto.Description;
-            routeModel.Distance = updateDto.Distance;
-            routeModel.StartPoint = updateDto.StartPoint;
-            routeModel.EndPoint = updateDto.EndPoint;
-
-            await _context.SaveChangesAsync();
+            
 
             return Ok(routeModel.ToRouteDTO());
         }
@@ -86,15 +79,11 @@ namespace api.Controllers
         public async Task<IActionResult>Delete([FromRoute] int id){
 
             
-            var routeModel = await _context.Route.FirstOrDefaultAsync(x => x.ID == id);
+            var routeModel = await _routeRepo.DeleteAsync(id);
 
             if(routeModel == null){
                 return NotFound();
             }
-
-            _context.Route.Remove(routeModel);
-
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

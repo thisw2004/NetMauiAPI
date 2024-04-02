@@ -40,7 +40,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var blog = await _context.Blog.FindAsync(id);
+            var blog = await _blogRepo.GetByIdAsync(id);
 
             if(blog == null){
                 return NotFound();
@@ -55,8 +55,7 @@ namespace api.Controllers
         [HttpPost]
         public  async Task<IActionResult> Create([FromBody] CreateBlogRequestDto blogDTO){
             var blogModel = blogDTO.ToBlogFromCreateDTO();
-           await _context.Blog.AddAsync(blogModel);
-           await _context.SaveChangesAsync();
+           await _blogRepo.CreateAsync(blogModel);
             return CreatedAtAction(nameof(GetById), new {id = blogModel.ID},blogModel.ToBlogDTO());
         }
 
@@ -64,17 +63,11 @@ namespace api.Controllers
         [Route("{id}")]
 
         public async Task<IActionResult> Update([FromRoute] int id,[FromBody] UpdateBlogRequestDto updateDto){
-            var blogModel = await _context.Blog.FirstOrDefaultAsync(x => x.ID == id);
+            var blogModel = await _blogRepo.UpdateAsync(id,updateDto);
 
             if(blogModel == null){
                 return NotFound();
             }
-
-            blogModel.Author = updateDto.Author;
-            blogModel.Content = updateDto.Content;
-            blogModel.Title = updateDto.Title;
-
-           await _context.SaveChangesAsync();
 
             return Ok(blogModel.ToBlogDTO());
         }
@@ -82,16 +75,11 @@ namespace api.Controllers
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id){
-            var blogModel = await _context.Blog.FirstOrDefaultAsync(x => x.ID == id);
+            var blogModel = await _blogRepo.DeleteAsync(id);
 
             if(blogModel == null){
                 return NotFound();
             }
-
-            //remove not async function,reason unknown
-            _context.Blog.Remove(blogModel);
-
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

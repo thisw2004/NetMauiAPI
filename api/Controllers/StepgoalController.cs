@@ -39,7 +39,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var stepgoal = await _context.Stepgoal.FindAsync(id);
+            var stepgoal = await _stepgoalRepo.GetByIdAsync(id);
 
             if(stepgoal == null){
                 return NotFound();
@@ -53,8 +53,7 @@ namespace api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateStepgoalRequestDto stepgoalDTO){
             var stepgoalModel = stepgoalDTO.ToStepgoalFromCreateDTO();
-            await _context.Stepgoal.AddAsync(stepgoalModel);
-            await _context.SaveChangesAsync();
+            await _stepgoalRepo.CreateAsync(stepgoalModel);
             return CreatedAtAction(nameof(GetById), new {id = stepgoalModel.ID},stepgoalModel.ToStepgoalDTO());
         }
 
@@ -63,16 +62,12 @@ namespace api.Controllers
         [Route("{id}")]
 
         public async Task<IActionResult> Update([FromRoute] int id,[FromBody] UpdateStepgoalRequestDto updateDto){
-            var stepgoalModel = await _context.Stepgoal.FirstOrDefaultAsync(x => x.ID == id);
+            var stepgoalModel = await _stepgoalRepo.UpdateAsync(id,updateDto);
 
             if(stepgoalModel == null){
                 return NotFound();
             }
 
-            stepgoalModel.Goal = updateDto.Goal;
-           
-
-           await  _context.SaveChangesAsync();
 
             return Ok(stepgoalModel.ToStepgoalDTO());
         }
@@ -80,15 +75,11 @@ namespace api.Controllers
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id){
-            var stepgoalModel = await _context.Stepgoal.FirstOrDefaultAsync(x => x.ID == id);
+            var stepgoalModel = await _stepgoalRepo.DeleteAsync(id);
 
             if(stepgoalModel == null){
                 return NotFound();
             }
-
-            _context.Stepgoal.Remove(stepgoalModel);
-
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
