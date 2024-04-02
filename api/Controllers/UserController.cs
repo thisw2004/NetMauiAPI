@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.User;
+using api.Interfaces;
 using api.Mappers;
 using api.Migrations;
 using Microsoft.AspNetCore.Mvc;
@@ -17,17 +18,18 @@ namespace api.Controllers
     public class UserController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
+        private readonly IUserRepository _userRepo;
 
-        public UserController(ApplicationDBContext context){
+        public UserController(ApplicationDBContext context,IUserRepository userRepo){
 
+            _userRepo = userRepo;
             _context = context;
         }
-
         //get all users
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var users = await _context.User.ToListAsync();
+            var users = await _userRepo.GetAllAsync();
             var userdto = users.Select(s => s.ToUserDTO());
 
             return Ok(users);

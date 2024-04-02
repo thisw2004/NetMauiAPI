@@ -8,6 +8,7 @@ using api.Data;
 using api.Mappers;
 using api.Dtos.Blog;
 using Microsoft.EntityFrameworkCore;
+using api.Interfaces;
 
 namespace api.Controllers
 {
@@ -16,9 +17,11 @@ namespace api.Controllers
     public class BlogController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
+        private readonly IBlogRepository _blogRepo;
 
-        public BlogController(ApplicationDBContext context){
+        public BlogController(ApplicationDBContext context,IBlogRepository blogRepo){
 
+            _blogRepo = blogRepo;
             _context = context;
         }
 
@@ -27,7 +30,7 @@ namespace api.Controllers
         //async = execute this function tegelijk with the other instead stuk voor stuk.
         public async Task<IActionResult> GetAll()
         {
-            var blogs = await _context.Blog.ToListAsync();
+            var blogs = await _blogRepo.GetAllAsync();
             var blogDto = blogs.Select(s => s.ToBlogDTO());
 
             return Ok(blogs);

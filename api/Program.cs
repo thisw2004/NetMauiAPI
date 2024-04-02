@@ -1,4 +1,6 @@
 using api.Data;
+using api.Interfaces;
+using api.Repository;
 using Microsoft.AspNetCore.Hosting.Builder;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +19,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+
+builder.Services.AddScoped<IBlogRepository,BlogRepository>();
+builder.Services.AddScoped<IRouteRepository,RouteRepository>();
+//wrm accepteert die stepgoal niet?
+builder.Services.AddScoped<IStepgoalRepository,StepgoalRepository>();
+builder.Services.AddScoped<IUserRepository,UserRepository>();
 
 
 var app = builder.Build();

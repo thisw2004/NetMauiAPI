@@ -8,6 +8,7 @@ using api.Data;
 using api.Mappers;
 using api.Dtos.Stepgoal;
 using Microsoft.EntityFrameworkCore;
+using api.Interfaces;
 
 namespace api.Controllers
 {
@@ -15,10 +16,12 @@ namespace api.Controllers
     [ApiController]
     public class StepgoalController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
+         private readonly ApplicationDBContext _context;
+        private readonly IStepgoalRepository _stepgoalRepo;
 
-        public StepgoalController(ApplicationDBContext context){
+        public StepgoalController(ApplicationDBContext context,IStepgoalRepository stepgoalRepo){
 
+            _stepgoalRepo = stepgoalRepo;
             _context = context;
         }
 

@@ -8,6 +8,8 @@ using api.Data;
 using api.Mappers;
 using api.Dtos.Route;
 using Microsoft.EntityFrameworkCore;
+using api.Interfaces;
+using api.Models;
 
 namespace api.Controllers
 {
@@ -16,9 +18,11 @@ namespace api.Controllers
     public class RouteController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
+        private readonly IRouteRepository _routeRepo;
 
-        public RouteController(ApplicationDBContext context){
+        public RouteController(ApplicationDBContext context,IRouteRepository routeRepo){
 
+            _routeRepo = routeRepo;
             _context = context;
         }
 
@@ -26,7 +30,7 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var  routes = await _context.Route.ToListAsync();
+            var  routes = await _routeRepo.GetAllAsync();
             var routesdto = routes.Select(s => s.ToRouteDTO()); //?
 
             return Ok(routes);
