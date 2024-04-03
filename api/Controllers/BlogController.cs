@@ -30,6 +30,15 @@ namespace api.Controllers
         //async = execute this function tegelijk with the other instead stuk voor stuk.
         public async Task<IActionResult> GetAll()
         {
+            //data validaation
+            //now not yet implemented,but fs for future use
+            //not sure when validate what etc.
+            //needs in all controllers
+            // if(!ModelState.IsValid)
+            //     return BadRequest(ModelState);
+            
+
+
             var blogs = await _blogRepo.GetAllAsync();
             var blogDto = blogs.Select(s => s.ToBlogDTO());
 
