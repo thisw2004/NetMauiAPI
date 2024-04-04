@@ -2,6 +2,7 @@ using api.Data;
 using api.Interfaces;
 using api.Models;
 using api.Repository;
+using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -63,6 +64,8 @@ builder.Services.AddScoped<IRouteRepository,RouteRepository>();
 //wrm accepteert die stepgoal niet?
 builder.Services.AddScoped<IStepgoalRepository,StepgoalRepository>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
+//for tokenservice
+builder.Services.AddScoped<ITokenService,TokenService>();
 
 
 var app = builder.Build();
