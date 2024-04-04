@@ -11,8 +11,10 @@ namespace api.Models
         public string? Title { get; set; }
         public string? Content { get; set; }
         public string? Author { get; set; }
-        public DateTime Date { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime Date { get; set; } = DateTime.Today;
+        //do we set the default so?
+        public DateTime CreatedAt { get; set; } = DateTime.Today;
+        //TODO: only on update set this as default
+        public DateTime UpdatedAt { get; set; } 
     }
 }

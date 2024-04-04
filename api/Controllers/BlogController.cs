@@ -9,6 +9,7 @@ using api.Mappers;
 using api.Dtos.Blog;
 using Microsoft.EntityFrameworkCore;
 using api.Interfaces;
+using api.Helpers;
 
 namespace api.Controllers
 {
@@ -28,7 +29,7 @@ namespace api.Controllers
         //get all users
         [HttpGet]
         //async = execute this function tegelijk with the other instead stuk voor stuk.
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery]QueryObject query)
         {
             //data validaation
             //now not yet implemented,but fs for future use
