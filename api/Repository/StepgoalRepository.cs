@@ -57,6 +57,9 @@ namespace api.Repository
             }
 
             existingStepgoal.Goal = StepgoalDto.Goal;
+            // existingStepgoal.Achieved = StepgoalDTO.Achieved;
+
+            //hier achieved enz?
 
             await _context.SaveChangesAsync();
 

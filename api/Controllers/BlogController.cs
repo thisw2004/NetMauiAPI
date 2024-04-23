@@ -31,12 +31,6 @@ namespace api.Controllers
         //async = execute this function tegelijk with the other instead stuk voor stuk.
         public async Task<IActionResult> GetAll([FromQuery]QueryObject query)
         {
-            //data validaation
-            //now not yet implemented,but fs for future use
-            //not sure when validate what etc.
-            //needs in all controllers
-            // if(!ModelState.IsValid)
-            //     return BadRequest(ModelState);
             
 
 

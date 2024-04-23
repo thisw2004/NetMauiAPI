@@ -17,7 +17,6 @@ namespace api.Mappers
                 Date = stepgoalModel.Date,
                 Progress = stepgoalModel.Progress,
                 Achieved = stepgoalModel.Achieved
-                
             };
         }
 
@@ -25,6 +24,9 @@ namespace api.Mappers
             return new Stepgoal
             {
                 Goal = StepgoalDTO.Goal,
+                Date = StepgoalDTO.Date,
+        Progress = StepgoalDTO.Progress,
+         Achieved = StepgoalDTO.Achieved
                 //rest of the properties need to be filled in by code logic
 
             };
