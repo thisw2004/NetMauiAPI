@@ -8,7 +8,7 @@ namespace api.Dtos.Blog
 {
     public class CreateBlogRequestDto
     {
-        //wat kind of content do we need fot the user to add?
+        
         [Required]
         public string? Title { get; set; }
         [Required]

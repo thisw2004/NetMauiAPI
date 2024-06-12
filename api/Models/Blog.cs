@@ -14,7 +14,7 @@ namespace api.Models
         public DateTime Date { get; set; } = DateTime.Today;
         //do we set the default so?
         public DateTime CreatedAt { get; set; } = DateTime.Today;
-        //TODO: only on update set this as default
+        
         public DateTime UpdatedAt { get; set; } 
     }
 }

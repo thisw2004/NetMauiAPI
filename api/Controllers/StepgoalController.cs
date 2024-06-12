@@ -12,7 +12,7 @@ using api.Interfaces;
 
 namespace api.Controllers
 {
-    [Route("api/stepgoals")] //user or users? all users bc otherwise you need to specify an id 
+    [Route("api/stepgoals")] 
     [ApiController]
     public class StepgoalController : ControllerBase
     {
@@ -25,7 +25,7 @@ namespace api.Controllers
             _context = context;
         }
 
-        //get all users
+        //get all stepgoals
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -35,7 +35,7 @@ namespace api.Controllers
             return Ok(stepgoals);
         }
 
-        //get 1 user
+        //get stepgoal by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -46,10 +46,10 @@ namespace api.Controllers
             }
 
             return Ok(stepgoal.ToStepgoalDTO());
-
-            //return Ok(users);
+ 
         }
 
+        //create stepgoal
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateStepgoalRequestDto stepgoalDTO){
             var stepgoalModel = stepgoalDTO.ToStepgoalFromCreateDTO();
@@ -58,6 +58,7 @@ namespace api.Controllers
         }
 
 
+        //update route by id
         [HttpPut]
         [Route("{id}")]
 
@@ -72,6 +73,7 @@ namespace api.Controllers
             return Ok(stepgoalModel.ToStepgoalDTO());
         }
 
+        //delete route by id
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id){

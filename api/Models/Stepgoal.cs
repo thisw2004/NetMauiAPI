@@ -15,7 +15,8 @@ namespace api.Models
         public int Goal { get; set; }
 
         [Required]
-        //property is always datetime of today when created
+       
+       //default of proprty datetime is today's date
         public DateTime Date { get; set; } = DateTime.Today;
 
         public int Progress { get; set; } 

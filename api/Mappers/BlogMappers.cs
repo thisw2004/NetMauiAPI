@@ -11,7 +11,7 @@ namespace api.Mappers
     {
         public static BlogDTO ToBlogDTO(this Blog blogModel){
             return new BlogDTO{
-                //set here all data you want to be displayed.
+                
                 ID = blogModel.ID,
                 Title = blogModel.Title,
                 Content = blogModel.Content,

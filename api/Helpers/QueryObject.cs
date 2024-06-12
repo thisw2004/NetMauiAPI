@@ -7,7 +7,7 @@ namespace api.Helpers
 {
     public class QueryObject
     {
-        //which filters do we need for blog?
+        
         //blog
 
         public string? Title { get; set; } = null;

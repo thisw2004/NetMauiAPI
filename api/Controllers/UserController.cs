@@ -35,7 +35,7 @@ namespace api.Controllers
             return Ok(users);
         }
 
-        //get 1 user
+        //get user by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -47,9 +47,9 @@ namespace api.Controllers
 
             return Ok(user.ToUserDTO());
 
-            //return Ok(users);
         }
         
+        //create user
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserRequestDto userDTO){
             var userModel = userDTO.ToUserFromCreateDTO();
@@ -57,6 +57,7 @@ namespace api.Controllers
             return CreatedAtAction(nameof(GetById), new {id = userModel.ID},userModel.ToUserDTO());
         }
 
+        //update user by id
         [HttpPut]
         [Route("{id}")]
 
@@ -70,6 +71,7 @@ namespace api.Controllers
             return Ok(userModel.ToUserDTO());
         }
 
+        //delete user by id
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id){

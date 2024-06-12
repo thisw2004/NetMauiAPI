@@ -100,7 +100,7 @@ namespace api.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, e.Message); // Return the exception message for debugging purposes
+                return StatusCode(500, e.Message); 
             }
         }
     }

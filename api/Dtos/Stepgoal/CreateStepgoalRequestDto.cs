@@ -19,6 +19,6 @@ namespace api.Dtos.Stepgoal
         public int Progress { get; set; }
 
         public bool Achieved { get; set; }
-        //rest of the properties need to be added by logic,not by user when creating stepgoal
+        
     }
 }

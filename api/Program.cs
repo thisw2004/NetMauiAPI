@@ -89,7 +89,7 @@ builder.Services.AddAuthentication(options => {
 
 
 builder.Services.AddScoped<IBlogRepository,BlogRepository>();
-builder.Services.AddScoped<IRouteRepository,RouteRepository>();
+
 //wrm accepteert die stepgoal niet?
 builder.Services.AddScoped<IStepgoalRepository,StepgoalRepository>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();

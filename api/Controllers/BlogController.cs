@@ -13,7 +13,7 @@ using api.Helpers;
 
 namespace api.Controllers
 {
-    [Route("api/blogs")] //user or users? all users bc otherwise you need to specify an id 
+    [Route("api/blogs")]  
     [ApiController]
     public class BlogController : ControllerBase
     {
@@ -26,21 +26,19 @@ namespace api.Controllers
             _context = context;
         }
 
-        //get all users
+        //get all blogs
         [HttpGet]
-        //async = execute this function tegelijk with the other instead stuk voor stuk.
+        
         public async Task<IActionResult> GetAll([FromQuery]QueryObject query)
         {
             
-
-
             var blogs = await _blogRepo.GetAllAsync();
             var blogDto = blogs.Select(s => s.ToBlogDTO());
 
             return Ok(blogs);
         }
 
-        //get 1 user
+        //get blog by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -52,10 +50,9 @@ namespace api.Controllers
 
             return Ok(blog.ToBlogDTO());
 
-            //return Ok(users);
         }
         
-        // 6.
+        //create blog
         [HttpPost]
         public  async Task<IActionResult> Create([FromBody] CreateBlogRequestDto blogDTO){
             var blogModel = blogDTO.ToBlogFromCreateDTO();
@@ -63,6 +60,7 @@ namespace api.Controllers
             return CreatedAtAction(nameof(GetById), new {id = blogModel.ID},blogModel.ToBlogDTO());
         }
 
+        //update blog
         [HttpPut]
         [Route("{id}")]
 
@@ -76,6 +74,7 @@ namespace api.Controllers
             return Ok(blogModel.ToBlogDTO());
         }
 
+        //delete blog by id
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id){
